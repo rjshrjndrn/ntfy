@@ -161,29 +161,29 @@ web-lint:
 # Main server/client build
 
 cli: cli-deps
-	goreleaser build --snapshot --clean
+	CGO_ENABLED=0 goreleaser build --snapshot --clean
 
 cli-linux-amd64: cli-deps-static-sites
-	goreleaser build --snapshot --clean --id ntfy_linux_amd64
+	CGO_ENABLED=0 goreleaser build --snapshot --clean --id ntfy_linux_amd64
 
 cli-linux-armv6: cli-deps-static-sites cli-deps-gcc-armv6-armv7
-	goreleaser build --snapshot --clean --id ntfy_linux_armv6
+	CGO_ENABLED=0 goreleaser build --snapshot --clean --id ntfy_linux_armv6
 
 cli-linux-armv7: cli-deps-static-sites cli-deps-gcc-armv6-armv7
-	goreleaser build --snapshot --clean --id ntfy_linux_armv7
+	CGO_ENABLED=0 goreleaser build --snapshot --clean --id ntfy_linux_armv7
 
 cli-linux-arm64: cli-deps-static-sites cli-deps-gcc-arm64
-	goreleaser build --snapshot --clean --id ntfy_linux_arm64
+	CGO_ENABLED=0 goreleaser build --snapshot --clean --id ntfy_linux_arm64
 
 cli-windows-amd64: cli-deps-static-sites
-	goreleaser build --snapshot --clean --id ntfy_windows_amd64
+	CGO_ENABLED=0 goreleaser build --snapshot --clean --id ntfy_windows_amd64
 
 cli-darwin-all: cli-deps-static-sites
-	goreleaser build --snapshot --clean --id ntfy_darwin_all
+	CGO_ENABLED=0 goreleaser build --snapshot --clean --id ntfy_darwin_all
 
 cli-linux-server: cli-deps-static-sites
 	# This is a target to build the CLI (including the server) manually.
-	# Use this for development, if you really don't want to install GoReleaser ...
+	# Use this for development, if you really don't want to install CGO_ENABLED=0 goreleaser ...
 	mkdir -p dist/ntfy_linux_server server/docs
 	CGO_ENABLED=1 go build \
 		-o dist/ntfy_linux_server/ntfy \
@@ -203,7 +203,7 @@ cli-darwin-server: cli-deps-static-sites
 
 cli-client: cli-deps-static-sites
 	# This is a target to build the CLI (excluding the server) manually. This should work on Linux/macOS/Windows.
-	# Use this for development, if you really don't want to install GoReleaser ...
+	# Use this for development, if you really don't want to install CGO_ENABLED=0 goreleaser ...
 	mkdir -p dist/ntfy_client server/docs
 	CGO_ENABLED=0 go build \
 		-o dist/ntfy_client/ntfy \
@@ -298,10 +298,10 @@ staticcheck: .PHONY
 # Releasing targets
 
 release: clean cli-deps release-checks docs web check
-	goreleaser release --clean
+	CGO_ENABLED=0 goreleaser release --clean
 
 release-snapshot: clean cli-deps docs web check
-	goreleaser release --snapshot --skip-publish --clean
+	CGO_ENABLED=0 goreleaser release --snapshot --skip-publish --clean
 
 release-checks:
 	$(eval LATEST_TAG := $(shell git describe --abbrev=0 --tags | cut -c2-))
